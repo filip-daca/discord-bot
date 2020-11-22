@@ -60,11 +60,20 @@ class BoomerBot {
                                 message.getContent().toLowerCase().contains("johndeere")
                 )
                 .filter(message -> !message.getContent().startsWith("!"))
-                .flatMap(message -> {
-                    message.addReaction(ReactionEmoji.custom(Snowflake.of(640977678643494914),
-                            "john_deere", false))
-                    message.getChannel().createMessage("Tomorrow morning, we're mowing the lawn!")
-                })
+                .flatMap(message -> message.addReaction(ReactionEmoji.custom(Snowflake.of(640977678643494914),
+                        "john_deere", false)))
+                .subscribe()
+
+        client.getEventDispatcher().on(MessageCreateEvent)
+                .map(MessageCreateEvent::getMessage)
+                .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
+                .filter(message ->
+                        message.getContent().toLowerCase().contains("john deere") ||
+                                message.getContent().toLowerCase().contains("johndeere")
+                )
+                .filter(message -> !message.getContent().startsWith("!"))
+                .flatMap(Message::getChannel)
+                .flatMap(channel -> channel.createMessage("Tomorrow morning, we're mowing the lawn!"))
                 .subscribe()
 
         client.onDisconnect().block()
