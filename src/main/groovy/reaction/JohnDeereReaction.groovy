@@ -20,7 +20,7 @@ class JohnDeereReaction {
 
     static consume(Flux messages) {
         def johnDeereMessages = messages
-                .filter(message -> phrases.contains(message.getContent().toLoweCase()))
+                .filter(message -> phrases.contains(message.getContent().toLowerCase()))
 
         johnDeereMessages
                 .flatMap(message -> message.addReaction(johnDeereEmoji))
