@@ -19,9 +19,17 @@ class BoomerBot {
         client.getEventDispatcher().on(MessageCreateEvent)
             .map(MessageCreateEvent::getMessage)
             .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
-            .filter(message -> message.getContent().equalsIgnoreCase("!ping"))
+            .filter(message -> message.getContent().equalsIgnoreCase("!boomer"))
             .flatMap(Message::getChannel)
-            .flatMap(channel -> channel.createMessage("Pong!"))
+            .flatMap(channel -> channel.createMessage("Howdy partner!"))
+            .subscribe();
+
+        client.getEventDispatcher().on(MessageCreateEvent)
+            .map(MessageCreateEvent::getMessage)
+            .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
+            .filter(message -> message.getContent().contains("boomer"))
+            .flatMap(Message::getChannel)
+            .flatMap(channel -> channel.createMessage("Are you winning son?"))
             .subscribe();
 
         client.onDisconnect().block();
