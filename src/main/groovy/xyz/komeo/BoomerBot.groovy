@@ -5,7 +5,8 @@ import discord4j.core.event.domain.lifecycle.ReadyEvent
 import discord4j.core.event.domain.message.MessageCreateEvent
 import discord4j.core.object.entity.Message
 import xyz.komeo.reaction.JohnDeereReaction
-import xyz.komeo.reaction.NiceReaction;
+import xyz.komeo.reaction.NiceReaction
+import xyz.komeo.reaction.SonReaction;
 
 class BoomerBot {
 
@@ -31,12 +32,7 @@ class BoomerBot {
                 .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
                 .filter(message -> !message.getContent().startsWith("!"))
 
-        validMessages
-                .filter(message -> message.getContent().toLowerCase().contains("boomer"))
-                .flatMap(Message::getChannel)
-                .flatMap(channel -> channel.createMessage("Are you winning son?"))
-                .subscribe()
-
+        SonReaction.consume(validMessages)
         NiceReaction.consume(validMessages)
         JohnDeereReaction.consume(validMessages)
 
