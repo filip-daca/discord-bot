@@ -1,11 +1,25 @@
 plugins {
-    id 'java-library'
+    id 'application'
+    id 'groovy'
 }
 
 repositories {
     mavenCentral()
 }
 
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ['src/main/groovy']
+        }
+    }
+}
+
 dependencies {
-    api 'com.discord4j:discord4j-core:3.1.1'
+    implementation 'com.discord4j:discord4j-core:3.1.1'
+    implementation 'org.codehaus.groovy:groovy-all:3.0.6'
+}
+
+application {
+    mainClassName = 'BoomerBot'
 }
