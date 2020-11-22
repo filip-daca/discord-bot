@@ -1,3 +1,5 @@
+package xyz.komeo
+
 import discord4j.core.DiscordClientBuilder
 import discord4j.core.event.domain.lifecycle.ReadyEvent
 import discord4j.core.event.domain.message.MessageCreateEvent
