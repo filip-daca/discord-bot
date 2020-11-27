@@ -1,11 +1,15 @@
 package xyz.komeo.reaction
 
 import discord4j.common.util.Snowflake
+import discord4j.core.object.entity.Message
 import discord4j.core.object.reaction.ReactionEmoji
 import reactor.core.publisher.Flux
 import xyz.komeo.flow.ConsumesFlux
+import xyz.komeo.memory.BotMemory
 
 class NiceReaction implements ConsumesFlux {
+
+    BotMemory memory
 
     static boomsterEmoji = ReactionEmoji.custom(Snowflake.of(640976634589085726),
             "boomster_white", false)
@@ -21,7 +25,15 @@ class NiceReaction implements ConsumesFlux {
     def consume(Flux messages) {
         messages
                 .filter(message -> phrases.contains(message.getContent().toLowerCase()))
-                .flatMap(message -> message.addReaction(boomsterEmoji))
+                .flatMap { Message message ->
+                    def author = message.getAuthor()
+                    if (author) {
+                        def username = author.get().username
+                        memory.dailyCans.username ?= 0
+                        memory.dailyCans.username += 1
+                    }
+                    message.addReaction(boomsterEmoji)
+                }
                 .subscribe()
     }
 }

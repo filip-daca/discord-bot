@@ -5,6 +5,7 @@ import discord4j.core.event.domain.lifecycle.ReadyEvent
 import discord4j.core.event.domain.message.MessageCreateEvent
 import xyz.komeo.command.BasicCommand
 import xyz.komeo.flow.ConsumesFlux
+import xyz.komeo.memory.BotMemory
 import xyz.komeo.reaction.JohnDeereReaction
 import xyz.komeo.reaction.NiceReaction
 import xyz.komeo.reaction.SonReaction;
@@ -12,6 +13,7 @@ import xyz.komeo.reaction.SonReaction;
 class BoomerBot {
 
     def client
+    BotMemory memory
 
     Set<ConsumesFlux> commands = [
             new BasicCommand()
@@ -19,7 +21,7 @@ class BoomerBot {
 
     Set<ConsumesFlux> reactions = [
             new SonReaction(),
-            new NiceReaction(),
+            new NiceReaction(memory),
             new JohnDeereReaction()
     ]
 
