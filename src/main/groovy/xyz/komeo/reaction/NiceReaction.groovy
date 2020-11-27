@@ -26,11 +26,9 @@ class NiceReaction implements ConsumesFlux {
         messages
                 .filter(message -> phrases.contains(message.getContent().toLowerCase()))
                 .flatMap { Message message ->
-                    def author = message.getAuthor()
-                    if (author) {
-                        def username = author.get().username
-                        memory.dailyCans.username ?= 0
-                        memory.dailyCans.username += 1
+                    message.getAuthor().ifPresent {author ->
+                        memory.dailyCans[author.username] ?= 0
+                        memory.dailyCans[author.username] += 1
                     }
                     message.addReaction(boomsterEmoji)
                 }
