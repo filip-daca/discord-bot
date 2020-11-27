@@ -3,10 +3,12 @@ package xyz.komeo.reaction
 import discord4j.common.util.Snowflake
 import discord4j.core.object.entity.Message
 import discord4j.core.object.reaction.ReactionEmoji
+import groovy.transform.TupleConstructor
 import reactor.core.publisher.Flux
 import xyz.komeo.flow.ConsumesFlux
 import xyz.komeo.memory.BotMemory
 
+@TupleConstructor
 class NiceReaction implements ConsumesFlux {
 
     BotMemory memory
