@@ -3,7 +3,7 @@ package xyz.komeo
 import discord4j.core.DiscordClientBuilder
 import discord4j.core.event.domain.lifecycle.ReadyEvent
 import discord4j.core.event.domain.message.MessageCreateEvent
-import discord4j.core.object.entity.Message
+import xyz.komeo.command.BasicCommand
 import xyz.komeo.flow.ConsumesFlux
 import xyz.komeo.reaction.JohnDeereReaction
 import xyz.komeo.reaction.NiceReaction
@@ -12,6 +12,10 @@ import xyz.komeo.reaction.SonReaction;
 class BoomerBot {
 
     def client
+
+    Set<ConsumesFlux> commands = [
+            new BasicCommand()
+    ]
 
     Set<ConsumesFlux> reactions = [
             new SonReaction(),
@@ -30,21 +34,22 @@ class BoomerBot {
     }
 
     void registerActions() {
-        client.getEventDispatcher().on(MessageCreateEvent)
-                .map(MessageCreateEvent::getMessage)
-                .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
-                .filter(message -> message.getContent().equalsIgnoreCase("!boomer"))
-                .flatMap(Message::getChannel)
-                .flatMap(channel -> channel.createMessage("Howdy partner!"))
-                .subscribe()
-
         def validMessages = client.getEventDispatcher().on(MessageCreateEvent)
                 .map(MessageCreateEvent::getMessage)
                 .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
+
+        def commandMessages = validMessages
+                .filter(message -> message.getContent().startsWith("!boomer"))
+
+        commands.each { reaction ->
+            reaction.consume(commandMessages)
+        }
+
+        def nonCommandMessages = validMessages
                 .filter(message -> !message.getContent().startsWith("!"))
 
         reactions.each { reaction ->
-            reaction.consume(validMessages)
+            reaction.consume(nonCommandMessages)
         }
     }
 
