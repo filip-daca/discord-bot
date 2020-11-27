@@ -26,6 +26,8 @@ class BoomerBot {
     ]
 
     void initialize() {
+        memory = new BotMemory()
+
         client = DiscordClientBuilder.create(System.getenv('ACCESS_TOKEN')).build().login().block()
 
         client.getEventDispatcher().on(ReadyEvent)
