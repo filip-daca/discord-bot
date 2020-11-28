@@ -8,6 +8,8 @@ class Lexer {
         lexes.each {
             matches = matches || it.matches(message)
         }
+
+        matches
     }
 
 }
