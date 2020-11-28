@@ -13,7 +13,7 @@ import xyz.komeo.reaction.SonReaction;
 class BoomerBot {
 
     def client
-    BotMemory memory
+    BotMemory memory = new BotMemory()
 
     Set<ConsumesFlux> commands = [
             new BasicCommand()
@@ -26,8 +26,6 @@ class BoomerBot {
     ]
 
     void initialize() {
-        memory = new BotMemory()
-
         client = DiscordClientBuilder.create(System.getenv('ACCESS_TOKEN')).build().login().block()
 
         client.getEventDispatcher().on(ReadyEvent)
