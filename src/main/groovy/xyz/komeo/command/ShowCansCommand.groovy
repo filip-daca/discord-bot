@@ -23,7 +23,7 @@ class ShowCansCommand implements ConsumesFlux {
                 .filter(message -> Lexer.messageMatches(message.getContent(), lexes))
                 .flatMap(Message::getChannel)
                 .flatMap { channel ->
-                    def sorted = memory.dailyCans.sort({ k1, k2 -> memory.dailyCans[k1] <=> memory.dailyCans[k2] } as Comparator)
+                    def sorted = memory.dailyCans.sort({ k1, k2 -> memory.dailyCans[k2] <=> memory.dailyCans[k1] } as Comparator)
                     def stats = "Here comes top 3 players:\n" +
                             sorted.take(3).collect { "- ${it.key} = `${it.value}` " }.join("\n")
                     channel.createMessage(stats)
