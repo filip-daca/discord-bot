@@ -4,6 +4,7 @@ import discord4j.core.DiscordClientBuilder
 import discord4j.core.event.domain.lifecycle.ReadyEvent
 import discord4j.core.event.domain.message.MessageCreateEvent
 import xyz.komeo.command.BasicCommand
+import xyz.komeo.command.CountModsCommand
 import xyz.komeo.command.ShowCansCommand
 import xyz.komeo.flow.ConsumesFlux
 import xyz.komeo.memory.BotMemory
@@ -18,7 +19,8 @@ class BoomerBot {
 
     Set<ConsumesFlux> commands = [
             new BasicCommand(),
-            new ShowCansCommand(memory)
+            new ShowCansCommand(memory),
+            new CountModsCommand()
     ]
 
     Set<ConsumesFlux> reactions = [
