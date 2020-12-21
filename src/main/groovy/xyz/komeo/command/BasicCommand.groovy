@@ -12,11 +12,18 @@ class BasicCommand implements ConsumesFlux {
             new Lex(["hell|hi|howd"])
     ]
 
+    static responses = [
+            'boooo-ya!',
+            'hey!',
+            'Howdy partner!',
+            '*sips*'
+    ]
+
     def consume(Flux messages) {
         messages
                 .filter(message -> Lexer.messageMatches(message.getContent(), lexes))
                 .flatMap(Message::getChannel)
-                .flatMap(channel -> channel.createMessage("Howdy partner!"))
+                .flatMap(channel -> channel.createMessage(responses.shuffled().first()))
                 .subscribe()
     }
 }

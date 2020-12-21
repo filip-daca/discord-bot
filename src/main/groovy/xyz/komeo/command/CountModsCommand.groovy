@@ -34,7 +34,7 @@ class CountModsCommand implements ConsumesFlux {
                 .flatMap { channel ->
                     def modCount = loadTotalModCount()
                     def response = responses.shuffled().first()
-                    channel.createMessage("Cuttenrly we have `${modCount}` mods - ${response}")
+                    channel.createMessage("Currently we have `${modCount}` mods - ${response}")
                 }
                 .subscribe()
     }
