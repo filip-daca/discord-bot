@@ -19,8 +19,8 @@ class HttpService {
 
             br = new BufferedReader(new InputStreamReader(connection.getInputStream()))
 
-            StringBuffer sb = new StringBuffer()
-            String inputLine;
+            StringBuilder sb = new StringBuilder()
+            String inputLine
             while ((inputLine = br.readLine()) != null) {
                 sb.append(inputLine)
             }
@@ -34,26 +34,28 @@ class HttpService {
     }
 
     private Proxy createProxy() {
-        new Proxy(Proxy.Type.HTTP, new InetSocketAddress(fixieHost, fixiePort));
+        new Proxy(Proxy.Type.HTTP, new InetSocketAddress(fixieHost, fixiePort))
     }
 
     private void setProxyAuthentication() {
+        System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
+
         Authenticator authenticator = new Authenticator() {
             PasswordAuthentication getPasswordAuthentication() {
-                return (new PasswordAuthentication(fixieUser, fixiePassword.toCharArray()))
+                return (new PasswordAuthentication("$fixieHost\\$fixieUser", fixiePassword.toCharArray()))
             }
         }
-        Authenticator.setDefault(authenticator);
+        Authenticator.setDefault(authenticator)
     }
 
     private void initializeProxy() {
         String fixieUrl = System.getenv(FIXIE_URL_ENV)
 
-        String[] fixieValues = fixieUrl.split("[/(:\\/@)/]+");
-        fixieUser = fixieValues[1];
-        fixiePassword = fixieValues[2];
-        fixieHost = fixieValues[3];
-        fixiePort = Integer.parseInt(fixieValues[4]);
+        String[] fixieValues = fixieUrl.split("[/(:\\/@)/]+")
+        fixieUser = fixieValues[1]
+        fixiePassword = fixieValues[2]
+        fixieHost = fixieValues[3]
+        fixiePort = Integer.parseInt(fixieValues[4])
     }
 
     static private boolean isProxyEmabled() {
