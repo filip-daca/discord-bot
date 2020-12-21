@@ -6,6 +6,7 @@ import reactor.core.publisher.Flux
 import xyz.komeo.flow.ConsumesFlux
 import xyz.komeo.flow.Lex
 import xyz.komeo.flow.Lexer
+import xyz.komeo.http.HttpService
 
 @TupleConstructor
 class CountModsCommand implements ConsumesFlux {
@@ -39,7 +40,9 @@ class CountModsCommand implements ConsumesFlux {
     }
 
     static def loadTotalModCount() {
-        new URL(SITE_URL).getText()
+        HttpService service = new HttpService()
+        service.init()
+        service.getWebsiteContent(SITE_URL)
                 .find(/${DATA_TAG}="${DATA_VALUE}".*>(.*)</)
                 .replaceAll('<.*', '')
                 .replaceAll('.*>','')
